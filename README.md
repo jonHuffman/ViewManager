@@ -1,2 +1,2 @@
 # ViewManager
-A system for managing UI lifecycle in Unity applications
+A system for managing UI lifecycle in Unity applications. Originally written and maintained for private use I have decided to make it public in hopes that other game developers will find it useful.
