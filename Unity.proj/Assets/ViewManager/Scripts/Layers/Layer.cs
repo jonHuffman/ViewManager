@@ -1,11 +1,11 @@
-﻿namespace Copper.ViewManager
+﻿namespace Copper.ViewManager.Layers
 {
     using Interfaces;
     using UnityEngine;
     using UnityEngine.UI;
     using Utils;
 
-    public sealed class Layer
+    internal class Layer
     {
         public int layerID;
         public string name;

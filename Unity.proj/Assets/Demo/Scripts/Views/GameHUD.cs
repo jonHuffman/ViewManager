@@ -5,16 +5,28 @@ using Copper.ViewManager.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameHUD : BaseView
+public class GameHUD : BaseView, IViewDataReceiver<GameHUD.GameHUDData>
 {
     [SerializeField]
     private Animator anim;
     [SerializeField]
     private Text healthText;
 
+    private GameHUDData gameHudData;
+
     private ViewTransitionComplete onInComplete;
     private ViewTransitionComplete onOutComplete;
 
+    public void SetViewData(IViewData<GameHUDData> viewData)
+    {
+        gameHudData = viewData.TypedData;
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        healthText.text = "HP: " + gameHudData.health;
+    }
 
     public override void TransitionIn()
     {
@@ -26,11 +38,6 @@ public class GameHUD : BaseView
         //In this case the onOutComplete callback is stored until the animation completes and is then called ANIM_OnTransitionOutComplete
         this.onOutComplete = onOutComplete;
         anim.SetTrigger("TransitionOut");
-    }
-
-    public override void UpdateView(object data)
-    {
-        healthText.text = "HP: " + (data as GameHUDData).health.ToString();
     }
 
     /// <summary>
@@ -62,13 +69,18 @@ public class GameHUD : BaseView
     /// <summary>
     /// A basic example of storing View data in a class to be passed through UpdateView
     /// </summary>
-    public class GameHUDData
+    public class GameHUDData : IViewData<GameHUDData>
     {
         public int health;
 
         public GameHUDData(int health)
         {
             this.health = health;
+        }
+
+        public GameHUDData TypedData
+        {
+            get => this;
         }
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 /// <summary>
 /// Its called a dialog but in the end everything is a View
 /// </summary>
-public class ConfirmationDialog : BaseView
+public class ConfirmationDialog : BaseView, IViewDataReceiver<ConfirmationDialog.ConfirmationDialogData>
 {
     [SerializeField]
     private RectTransform dialogBody;
@@ -18,13 +18,18 @@ public class ConfirmationDialog : BaseView
     private float transitionLength = 1f;
 
     private Vector3 outPos;
-    private ConfirmationDialogData data;
+    private ConfirmationDialogData confirmationDialogData;
 
     private void Awake()
     {
         Debug.Assert(dialogBody != null, "dialogBody is Null!");
     }
-    
+
+    public void SetViewData(IViewData<ConfirmationDialogData> viewData)
+    {
+        confirmationDialogData = viewData.TypedData;
+    }
+
     public override void TransitionIn()
     {
         outPos = dialogBody.transform.localPosition;
@@ -39,18 +44,12 @@ public class ConfirmationDialog : BaseView
         dialogBody.DOLocalMove(outPos, transitionLength).OnComplete(() => { onOutComplete(); });
     }
 
-    public override void UpdateView(object data)
-    {
-        //Store the data object so that we can call the callbacks later
-        this.data = (ConfirmationDialogData)data;
-    }
-
     /// <summary>
     /// Handles the user confirming their action
     /// </summary>
     public void UI_OnConfirm()
     {
-        data.onConfirmCallback?.Invoke();
+        confirmationDialogData.onConfirmCallback?.Invoke();
 
         Close();
     }
@@ -60,7 +59,7 @@ public class ConfirmationDialog : BaseView
     /// </summary>
     public void UI_OnCancel()
     {
-        data.onCancelCallback?.Invoke();
+        confirmationDialogData.onCancelCallback?.Invoke();
 
         Close();
     }
@@ -68,7 +67,7 @@ public class ConfirmationDialog : BaseView
     /// <summary>
     /// Stores the callbacks for the confirmation dialog
     /// </summary>
-    public class ConfirmationDialogData
+    public class ConfirmationDialogData : IViewData<ConfirmationDialogData>
     {
         public Action onConfirmCallback;
         public Action onCancelCallback;
@@ -77,6 +76,11 @@ public class ConfirmationDialog : BaseView
         {
             onConfirmCallback = confirmationCallback;
             onCancelCallback = cancelCallback;
+        }
+
+        public ConfirmationDialogData TypedData
+        {
+            get => this;
         }
     }
 

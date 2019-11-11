@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using Interfaces;
+    using Layers;
     using ScriptableObjects;
     using UnityEngine;
     using UnityEngine.UI;
@@ -20,13 +21,13 @@
 
         private Canvas viewCanvas;
         private CanvasGroup canvasGroup;
-        
+
         private RectTransform dialogContainer;
 
         private LayerCollection layerCollection;
 
         private ViewLoaderFactory viewLoaderFactory;
-        
+
         private Dictionary<int, ViewInfo> registeredViews = new Dictionary<int, ViewInfo>();
         private Dictionary<int, IView> activeViews = new Dictionary<int, IView>();
         private Dictionary<int, IView> persistentViews = new Dictionary<int, IView>();
@@ -72,7 +73,7 @@
             }
 
             LinkCanvas(viewCanvas);
-            
+
             layerCollection = new LayerCollection(CreateViewContainer("Views"));
             CreateDialogContainer();
 
@@ -100,8 +101,20 @@
         /// If the view is already active, it will not not get re-added.
         /// </summary>
         /// <param name="viewID">ID of the view to add.</param>
-        /// <param name="initData">A set of data to be passed to via UpdateView after the view is created</param>
-        public void AddView(int viewID, object initData = null)
+        public void AddView(int viewID)
+        {
+            AddView<NullData>(viewID, null);
+        }
+
+        /// <summary>
+        /// Adds a View to the canvas on its pre-defined Layer.
+        /// If there is already a view occupying that Layer it will be removed first.
+        /// If the view is already active, it will not not get re-added.
+        /// </summary>
+        /// <typeparam name="T">The type of IViewData that you wish to pass to the view</typeparam>
+        /// <param name="viewID">ID of the view to add</param>
+        /// <param name="viewData">The data you wish to pass to the view</param>
+        public void AddView<T>(int viewID, T viewData) where T : IViewData<T>
         {
             if (!ViewCanBeAdded(viewID))
             {
@@ -127,7 +140,7 @@
             {
                 // Dialogs are simply added as the top-most item within the Dialogs layer
                 // We do not need to worry about something else occupying the layer
-                FinalizeAddView(viewInfo, initData);
+                FinalizeAddView(viewInfo, viewData);
                 return;
             }
 
@@ -135,11 +148,11 @@
             if (targetLayer.IsOccupied)
             {
                 viewsToAddList.Add(viewInfo.ViewID);
-                RemoveView(targetLayer.activeView.ViewID, () => FinalizeAddView(viewInfo, initData));
+                RemoveView(targetLayer.activeView.ViewID, () => FinalizeAddView(viewInfo, viewData));
             }
             else
             {
-                FinalizeAddView(viewInfo, initData);
+                FinalizeAddView(viewInfo, viewData);
             }
         }
 
@@ -193,32 +206,6 @@
                 {
                     RemoveView(layer.activeView.ViewID, null, forceRemove);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Updates the specified View with the data given if the view currently exists in the Canvas.
-        /// </summary>
-        /// <param name="viewID">viewID of the View to update.</param>
-        /// <param name="data">The object containing the data you wish to pass.</param>
-        public void UpdateView(int viewID, object data)
-        {
-            if (activeViews.ContainsKey(viewID))
-            {
-                IView view = activeViews[viewID];
-
-                if (view != null && view.ViewID.Equals(viewID))
-                {
-                    view.UpdateView(data);
-                }
-                else
-                {
-                    Logging.LogWarning("The view you attempted to update is not currently active or null.");
-                }
-            }
-            else
-            {
-                Logging.LogWarning("The view you attempted to update is not present in the ViewCanvas, have you called AddView yet?");
             }
         }
 
@@ -390,15 +377,10 @@
             return true;
         }
 
-        private void FinalizeAddView(ViewInfo viewInfo, object initData)
+        private void FinalizeAddView<T>(ViewInfo viewInfo, T viewData) where T : IViewData<T>
         {
-            CreateAndAddView(viewInfo);
+            CreateAndAddView(viewInfo, viewData);
             DispatchViewOpened(viewInfo.ViewID);
-
-            if (initData != null)
-            {
-                UpdateView(viewInfo.ViewID, initData);
-            }
             viewsToAddList.Remove(viewInfo.ViewID);
         }
 
@@ -447,7 +429,8 @@
         /// If the view is marked to be kept alive, then it is activated and re-runs its initialization logic.
         /// </summary>
         /// <param name="viewInfo">The info required to create the View</param>
-        private void CreateAndAddView(ViewInfo viewInfo)
+        /// <param name="viewData"></param>
+        private void CreateAndAddView<T>(ViewInfo viewInfo, T viewData) where T : IViewData<T>
         {
             // Create or Retrieve the View object
             IView view = GetView(viewInfo);
@@ -467,7 +450,14 @@
 
                 activeViews[viewInfo.ViewID] = view;
 
-                view.Initialize(viewInfo);
+                view.SetViewInfo(viewInfo);
+
+                if (view is IViewDataReceiver<T> viewDataReceiver)
+                {
+                    viewDataReceiver.SetViewData(viewData);
+                }
+
+                view.Initialize();
                 view.TransitionIn();
 
                 greyoutLayer.UpdateGreyoutPosition((BaseView)view, viewsToRemoveList);
@@ -476,6 +466,20 @@
             {
                 Logging.LogError(string.Format("The view object you attempted to add is not of type IView: {0}", viewInfo.ViewID));
             }
+        }
+
+        private bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+        {
+            while (toCheck != null && toCheck != typeof(object))
+            {
+                Type currentType = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+                if (generic == currentType)
+                {
+                    return true;
+                }
+                toCheck = toCheck.BaseType;
+            }
+            return false;
         }
 
         private IView GetView(ViewInfo viewInfo)

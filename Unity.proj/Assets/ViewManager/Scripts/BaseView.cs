@@ -23,17 +23,17 @@
             get => viewInfo.LayerID;
         }
 
-        public virtual void UpdateView(object data) { }
+        void IView.SetViewInfo(ViewInfo viewInfo)
+        {
+            this.viewInfo = viewInfo;
+        }
 
         void IView.SetParentTransform(RectTransform parent)
         {
             transform.SetParent(parent, false);
         }
 
-        public virtual void Initialize(ViewInfo viewInfo)
-        {
-            this.viewInfo = viewInfo;
-        }
+        public virtual void Initialize() { }
 
         public virtual void TransitionIn() { }
 

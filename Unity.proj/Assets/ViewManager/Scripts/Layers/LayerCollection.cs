@@ -1,4 +1,4 @@
-﻿namespace Copper.ViewManager
+﻿namespace Copper.ViewManager.Layers
 {
     using System;
     using System.Collections;
@@ -6,7 +6,7 @@
     using ScriptableObjects;
     using UnityEngine;
 
-    public class LayerCollection : IEnumerable
+    internal class LayerCollection : IEnumerable
     {
         private Transform viewContainer;
         private Dictionary<int, Layer> layers;

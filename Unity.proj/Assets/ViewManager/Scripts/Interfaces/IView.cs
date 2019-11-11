@@ -16,9 +16,14 @@
 
         int LayerID { get; }
 
-        void Initialize(ViewInfo viewInfo);
+        void SetViewInfo(ViewInfo viewInfo);
 
         void SetParentTransform(RectTransform parent);
+
+        /// <summary>
+        /// An initialization point for your view. This will be called before TransitionIn.
+        /// </summary>
+        void Initialize();
 
         /// <summary>
         /// Plays any in transition that you may want to set up. onInComplete must be called regardless of whether there is a transition or not.
@@ -31,12 +36,6 @@
         /// </summary>
         /// <param name="onOutComplete">The function that notifies that the View is does transitioning.</param>
         void TransitionOut(ViewTransitionComplete onOutComplete);
-
-        /// <summary>
-        /// Allows you to update the view with new data using the ViewManger as the intermediary
-        /// </summary>
-        /// <param name="data">An object containing the data you wish to pass</param>
-        void UpdateView(object data);
 
         /// <summary>
         /// The place to clean up your view before it is destroyed.

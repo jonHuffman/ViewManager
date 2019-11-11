@@ -1,4 +1,4 @@
-﻿namespace Copper.ViewManager
+﻿namespace Copper.ViewManager.Layers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -11,7 +11,7 @@
     /// A darkened layer placed behind dialogs and views on overlay layers to reduce distraction
     /// and bring focus to the UI elements above. It will also block input to the elements below.
     /// </summary>
-    public class GreyoutLayer
+    internal class GreyoutLayer
     {
         private const float FADE_RATE = 2.4f;
         private const float DEFAULT_ALPHA = 0.5f;
