@@ -175,7 +175,7 @@
         }
 
         /// <summary>
-        /// Removes all of the active views
+        /// Removes all of the active views and dialogs
         /// </summary>
         /// <param name="forceRemove">If true, all View objects will be destroyed regardless of whether they are flagged for persistence.</param>
         public void RemoveAllViews(bool forceRemove = false)
@@ -194,7 +194,8 @@
         }
 
         /// <summary>
-        /// Removes all the view except for those on a specified exempt layerID
+        /// Removes all the view except for those on a specified exempt layerID.
+        /// This will always remove all dialogs.
         /// </summary>
         /// <param name="exemptLayers">The layers that you do not want to remove views from</param>
         /// <param name="forceRemove">If true, all non-exempt View objects will be destroyed regardless of whether they are flagged for persistence.</param>
@@ -214,7 +215,7 @@
         /// </summary>
         /// <param name="layerID">The layerID viewID to try and retrieve a  viewID for.</param>
         /// <returns>The view viewID of the view on the specified layerID. Returns -1 if no view occupies the layerID.</returns>
-        public IComparable GetViewIDOnLayer(int layerID)
+        public int GetViewIdOnLayer(int layerID)
         {
             if (layerCollection[layerID].IsOccupied)
             {

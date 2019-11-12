@@ -21,6 +21,35 @@ public class GameInit : MonoBehaviour
         ViewManager.Instantiate(viewCanvas, registrar);
         ViewManager.Instance.SetDebugMethods(Debug.Log, Debug.LogWarning, Debug.LogError);
 
-        ViewManager.Instance.AddView(View.MainMenu);
+        if (!AreUnitTestsRunning())
+        {
+            ViewManager.Instance.AddView(View.MainMenu); 
+        }
+    }
+
+    private static bool AreUnitTestsRunning()
+    {
+        const string COMPONENT_NAME = "PlaymodeTestsController";
+
+        GameObject[] allObjects = Object.FindObjectsOfType<GameObject>();
+        foreach (GameObject gameObject in allObjects)
+        {
+            MonoBehaviour[] allComponents = gameObject.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour component in allComponents)
+            {
+                if (component == null)
+                {
+                    continue;
+                }
+                // Direct name comparison to the PlaymodeTestsController is brittle, but done
+                // to avoid having the demo depend on the Unit Test assembly
+                if (component.GetType().Name == COMPONENT_NAME)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

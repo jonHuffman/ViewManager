@@ -1,0 +1,14 @@
+{
+    "name": "Copper.Demo",
+    "references": [
+        "GUID:1b20f416e37055c4aafe08b43fb173ce"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
