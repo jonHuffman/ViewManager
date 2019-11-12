@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 649
 using Copper.ViewManager;
-using Copper.ViewManager.Constants;
-using Copper.ViewManager.ScriptableObjects;
+using Copper.ViewManager.Code;
+using Copper.ViewManager.Code.ScriptableObjects;
 using UnityEngine;
 
 public class GameInit : MonoBehaviour

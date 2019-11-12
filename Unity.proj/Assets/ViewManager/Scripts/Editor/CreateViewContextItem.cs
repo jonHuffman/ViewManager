@@ -1,8 +1,8 @@
 ﻿namespace Copper.ViewManager.Editor
 {
+    using Code.Utils;
     using UnityEditor;
     using UnityEngine;
-    using Utils;
 
     public class CreateViewContextItem
     {

@@ -1,0 +1,16 @@
+{
+    "name": "Copper.ViewManager.Editor",
+    "references": [
+        "GUID:1b20f416e37055c4aafe08b43fb173ce"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

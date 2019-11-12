@@ -2,8 +2,9 @@
 <#@ parameter name="className" type="System.String" #>
 <#@ parameter name="viewIDs" type="System.String[]" #>
 
-namespace Core.Module.ViewManagerSystem
+namespace Copper.ViewManager
 {
+  // This class is auto-generated
   public static class <#= className #>
   {
 <#

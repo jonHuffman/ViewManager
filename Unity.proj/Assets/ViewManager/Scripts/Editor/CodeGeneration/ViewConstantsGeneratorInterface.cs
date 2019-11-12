@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using Code.ScriptableObjects;
     using ScriptableObjects;
     using UnityEditor;
     using UnityEngine;

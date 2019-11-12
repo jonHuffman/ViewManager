@@ -1,5 +1,5 @@
 ﻿using Copper.ViewManager;
-using Copper.ViewManager.Constants;
+using Copper.ViewManager.Code;
 using UnityEngine;
 
 public class MainMenu : BaseView

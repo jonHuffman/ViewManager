@@ -1,7 +1,8 @@
 ﻿using DG.Tweening;
 using System;
 using Copper.ViewManager;
-using Copper.ViewManager.Interfaces;
+using Copper.ViewManager.Code;
+using Copper.ViewManager.Code.Interfaces;
 #pragma warning disable 649
 using UnityEngine;
 

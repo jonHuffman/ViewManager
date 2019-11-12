@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 649
 using Copper.ViewManager;
-using Copper.ViewManager.Constants;
+using Copper.ViewManager.Code;
 using UnityEngine;
 using UnityEngine.UI;
 

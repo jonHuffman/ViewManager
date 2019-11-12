@@ -22,7 +22,7 @@ namespace Core.Module.ViewManagerSystem.t4
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\nnamespace Core.Module.ViewManagerSystem\r\n{\r\n  public static class ");
+            this.Write("\r\nnamespace Copper.ViewManager\r\n{\r\n  // This class is auto-generated\r\n  public static class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(className));
             this.Write("\r\n  {\r\n");
 

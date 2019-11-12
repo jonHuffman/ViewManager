@@ -6,8 +6,9 @@
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using Code.Interfaces;
+    using Code.ScriptableObjects;
     using CodeGeneration;
-    using Interfaces;
     using ScriptableObjects;
     using UnityEditor;
     using UnityEngine;

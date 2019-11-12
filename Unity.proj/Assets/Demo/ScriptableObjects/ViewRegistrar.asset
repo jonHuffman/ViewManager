@@ -25,26 +25,26 @@ MonoBehaviour:
     view: Assets/Demo/Resources/Views/MainMenu.prefab
     isDialog: 0
     persistent: 0
-    loadType: Copper.ViewManager.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
+    loadType: Copper.ViewManager.Code.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - viewID: GameHUD
     layerID: 0
     view: Assets/Demo/Resources/Views/GameHUD.prefab
     isDialog: 0
     persistent: 1
-    loadType: Copper.ViewManager.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
+    loadType: Copper.ViewManager.Code.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - viewID: SettingsView
     layerID: 1
     view: Assets/Demo/Resources/Views/SettingsView.prefab
     isDialog: 0
     persistent: 0
-    loadType: Copper.ViewManager.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
+    loadType: Copper.ViewManager.Code.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - viewID: ConfirmationDialog
     layerID: 1
     view: Assets/Demo/Resources/Dialogs/ConfirmationDialog.prefab
     isDialog: 1
     persistent: 1
-    loadType: Copper.ViewManager.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
+    loadType: Copper.ViewManager.Code.ViewLoaders.ResourceViewLoader, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
