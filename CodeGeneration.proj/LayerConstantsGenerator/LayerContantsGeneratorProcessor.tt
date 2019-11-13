@@ -1,0 +1,12 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#
+	_classNameField = "Layer";
+	_layerIDsField = new string[]
+  {
+	"Main",
+	"HUD",
+	"Settings"
+  };
+#>
+<#@ include file="$(ProjectDir)LayerConstantsGenerator\LayerConstantsGenerator.tt" #>
