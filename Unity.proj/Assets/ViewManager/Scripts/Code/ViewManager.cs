@@ -175,7 +175,7 @@
         }
 
         /// <summary>
-        /// Removes all of the active views and dialogs
+        /// Removes all of the active views
         /// </summary>
         /// <param name="forceRemove">If true, all View objects will be destroyed regardless of whether they are flagged for persistence.</param>
         public void RemoveAllViews(bool forceRemove = false)
@@ -195,17 +195,31 @@
 
         /// <summary>
         /// Removes all the view except for those on a specified exempt layerID.
-        /// This will always remove all dialogs.
         /// </summary>
         /// <param name="exemptLayers">The layers that you do not want to remove views from</param>
         /// <param name="forceRemove">If true, all non-exempt View objects will be destroyed regardless of whether they are flagged for persistence.</param>
-        public void RemoveAllViews(IComparable[] exemptLayers, bool forceRemove = false)
+        public void RemoveAllViews(int[] exemptLayers, bool forceRemove = false)
         {
             foreach (Layer layer in layerCollection)
             {
                 if (layer.IsOccupied && !Array.Exists(exemptLayers, exemptLayerID => exemptLayerID.Equals(layer.layerID)))
                 {
                     RemoveView(layer.activeView.ViewID, null, forceRemove);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all of the active Dialogs
+        /// </summary>
+        /// <param name="forceRemove">If true, all View objects will be destroyed regardless of whether they are flagged for persistence.</param>
+        public void RemoveAllDialogs(bool forceRemove = false)
+        {
+            foreach (KeyValuePair<int, IView> keyValuePair in activeViews)
+            {
+                if (keyValuePair.Value.IsDialog)
+                {
+                    RemoveView(keyValuePair.Value.ViewID, null, forceRemove);
                 }
             }
         }

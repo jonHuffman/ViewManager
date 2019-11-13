@@ -1,12 +1,12 @@
 ﻿namespace Copper.ViewManager.UnitTests
 {
+    using Code;
+    using NUnit.Framework;
     using System;
     using System.Collections;
     using System.Reflection;
-    using NUnit.Framework;
-    using UnityEngine.SceneManagement;
-    using Code;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
     using UnityEngine.TestTools;
 
     public class ViewManagerTests
@@ -65,39 +65,77 @@
             ViewManager.Instance.AddView(View.ConfirmationDialog);
             ViewManager.Instance.RemoveAllViews();
 
-            Assert.IsFalse(ViewManager.Instance.IsViewActive(View.MainMenu));
-            Assert.IsFalse(ViewManager.Instance.IsViewActive(View.SettingsView));
-            Assert.IsFalse(ViewManager.Instance.IsViewActive(View.ConfirmationDialog));
+            Assert.IsFalse(ViewManager.Instance.IsViewActive(View.MainMenu), "MainMenu View is still active");
+            Assert.IsFalse(ViewManager.Instance.IsViewActive(View.SettingsView), "Settings View is still active");
+            Assert.IsTrue(ViewManager.Instance.IsViewActive(View.ConfirmationDialog), "Dialog is not active");
         }
 
         [Test]
         public static void RemoveAllViewsExceptLayer()
         {
-            //ViewManager.Instance.AddView(View.MainMenu);
-            //ViewManager.Instance.AddView(View.SettingsView);
-            //ViewManager.Instance.AddView(View.ConfirmationDialog);
-            //ViewManager.Instance.RemoveAllViews(exemptLayers);
+            ViewManager.Instance.AddView(View.MainMenu);
+            ViewManager.Instance.AddView(View.SettingsView);
+            ViewManager.Instance.AddView(View.ConfirmationDialog);
+            ViewManager.Instance.RemoveAllViews(new[] { Layer.Popup });
 
-            //Assert.IsFalse(ViewManager.Instance.IsViewActive(View.MainMenu));
-            //Assert.IsFalse(ViewManager.Instance.IsViewActive(View.ConfirmationDialog));
-            //Assert.IsTrue(ViewManager.Instance.IsViewActive(View.SettingsView));
-            throw new NotImplementedException("I realized that RemoveAllViews with exempt layers isn't valuable without having a way to easily get Layer IDs (it used to be easier). To be implemented.'");
+            Assert.IsFalse(ViewManager.Instance.IsViewActive(View.MainMenu), "MainMenu View is still active");
+            Assert.IsTrue(ViewManager.Instance.IsViewActive(View.SettingsView), "Settings View is not active");
+            Assert.IsTrue(ViewManager.Instance.IsViewActive(View.ConfirmationDialog), "Dialog is not active");
+        }
+
+        [Test]
+        public static void RemoveAllDialogs()
+        {
+            ViewManager.Instance.AddView(View.MainMenu);
+            ViewManager.Instance.AddView(View.SettingsView);
+            ViewManager.Instance.AddView(View.ConfirmationDialog);
+            ViewManager.Instance.RemoveAllDialogs();
+
+            Assert.IsTrue(ViewManager.Instance.IsViewActive(View.MainMenu), "MainMenu View is not active");
+            Assert.IsTrue(ViewManager.Instance.IsViewActive(View.SettingsView), "Settings View is not active");
+            Assert.IsFalse(ViewManager.Instance.IsViewActive(View.ConfirmationDialog), "Dialog is still active");
         }
 
         [Test]
         public static void AddingViewRemovesViewOnSameLayer()
         {
             ViewManager.Instance.AddView(View.MainMenu);
-            ViewManager.Instance.AddView(View.GameHUD, new GameHUD.GameHUDData(100)); 
+            ViewManager.Instance.AddView(View.GameHUD, new GameHUD.GameHUDData(100));
             Assert.IsFalse(ViewManager.Instance.IsViewActive(View.MainMenu));
         }
 
         [Test]
         public static void LayerIsOccupied()
         {
-            //ViewManager.Instance.AddView(View.MainMenu);
-            //ViewManager.Instance.GetViewIdOnLayer();
-            throw new NotImplementedException("I realized that GetViewIdOnLayer isn't valuable without having a way to easily get Layer IDs (it used to be easier). To be implemented.'");
+            ViewManager.Instance.AddView(View.SettingsView);
+            int viewOnLayer = ViewManager.Instance.GetViewIdOnLayer(Layer.Popup);
+            Assert.AreEqual(View.SettingsView, viewOnLayer);
+        }
+
+        [Test]
+        public static void SetGreyoutAlpha()
+        {
+            const float GREYOUT_ALPHA = 0.15f;
+            ViewManager.Instance.SetGreyoutAlpha(GREYOUT_ALPHA);
+
+            Assembly viewManagerAssembly = typeof(ViewManager).Assembly;
+            Type greyoutLayerType = viewManagerAssembly.GetType("Copper.ViewManager.Code.Layers.GreyoutLayer");
+
+            FieldInfo greyoutLayerInfo = typeof(ViewManager).GetField("greyoutLayer", BindingFlags.Instance | BindingFlags.NonPublic);
+            object internalDataObject = greyoutLayerInfo.GetValue(ViewManager.Instance);
+
+            FieldInfo greyoutLayerColorInfo = greyoutLayerType.GetField("greyoutColor", BindingFlags.Instance | BindingFlags.NonPublic);
+            Color greyoutColor;
+            if (greyoutLayerColorInfo.GetValue(internalDataObject) is Color)
+            {
+                greyoutColor = (Color)greyoutLayerColorInfo.GetValue(internalDataObject);
+            }
+            else
+            {
+                throw new NullReferenceException("Could not find Color on GreyoutLayer");
+            }
+
+            Assert.AreEqual(GREYOUT_ALPHA, greyoutColor.a);
         }
     }
 }

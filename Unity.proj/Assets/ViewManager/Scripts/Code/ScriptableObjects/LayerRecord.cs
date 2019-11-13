@@ -28,5 +28,7 @@ namespace Copper.ViewManager.Code.ScriptableObjects
         /// The additional shader channels to enable for this layer
         /// </summary>
         public AdditionalCanvasShaderChannels AdditionalShaderChannels { get { return additionalShaderChannels; } }
+
+        public bool HasName { get => !string.IsNullOrEmpty(LayerName); }
     }
 }

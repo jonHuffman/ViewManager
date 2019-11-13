@@ -76,7 +76,8 @@
 
             EditorGUILayout.HelpBox("All Views and Layers that you wish to use in your game may be registered here in the View Registrar.\n\n  Layers\nView layers will appear in the order that you specify here.\n\n  Views\nWhen setting up a view you must give it a name, specify its layer, and link the view.", MessageType.None);
 
-            if (GUILayout.Button("Regenerate View Statics")) ViewConstantsGeneratorInterface.GenerateConstants(target as ViewRegistrar);
+            if (GUILayout.Button("Regenerate View Statics"))
+                GenerateStatics();
 
             #region Layers
 
@@ -282,6 +283,13 @@
             #endregion
 
             _target.ApplyModifiedProperties();
+        }
+
+        private void GenerateStatics()
+        {
+            string outputPath = EditorUtility.OpenFolderPanel("Save Location", Application.dataPath, "");
+            ViewConstantsGeneratorInterface.GenerateConstants(target as ViewRegistrar, outputPath);
+            LayerConstantsGeneratorInterface.GenerateConstants(target as ViewRegistrar, outputPath);
         }
     }
 }
