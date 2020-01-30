@@ -114,7 +114,7 @@
         /// <typeparam name="T">The type of IViewData that you wish to pass to the view</typeparam>
         /// <param name="viewID">ID of the view to add</param>
         /// <param name="viewData">The data you wish to pass to the view</param>
-        public void AddView<T>(int viewID, T viewData) where T : IViewData<T>
+        public void AddView<T>(int viewID, T viewData) /*where T : IViewData<T>*/
         {
             if (!ViewCanBeAdded(viewID))
             {
@@ -140,7 +140,7 @@
             {
                 // Dialogs are simply added as the top-most item within the Dialogs layer
                 // We do not need to worry about something else occupying the layer
-                FinalizeAddView(viewInfo, viewData);
+                FinalizeAddView<T>(viewInfo, viewData);
                 return;
             }
 
@@ -148,11 +148,11 @@
             if (targetLayer.IsOccupied)
             {
                 viewsToAddList.Add(viewInfo.ViewID);
-                RemoveView(targetLayer.activeView.ViewID, () => FinalizeAddView(viewInfo, viewData));
+                RemoveView(targetLayer.activeView.ViewID, () => FinalizeAddView<T>(viewInfo, viewData));
             }
             else
             {
-                FinalizeAddView(viewInfo, viewData);
+                FinalizeAddView<T>(viewInfo, viewData);
             }
         }
 
@@ -392,7 +392,7 @@
             return true;
         }
 
-        private void FinalizeAddView<T>(ViewInfo viewInfo, T viewData) where T : IViewData<T>
+        private void FinalizeAddView<T>(ViewInfo viewInfo, ViewData<T> viewData)
         {
             CreateAndAddView(viewInfo, viewData);
             DispatchViewOpened(viewInfo.ViewID);
@@ -445,7 +445,7 @@
         /// </summary>
         /// <param name="viewInfo">The info required to create the View</param>
         /// <param name="viewData"></param>
-        private void CreateAndAddView<T>(ViewInfo viewInfo, T viewData) where T : IViewData<T>
+        private void CreateAndAddView<T>(ViewInfo viewInfo, ViewData<T> viewData)
         {
             // Create or Retrieve the View object
             IView view = GetView(viewInfo);

@@ -17,7 +17,7 @@ public class GameHUD : BaseView, IViewDataReceiver<GameHUD.GameHUDData>
     private ViewTransitionComplete onInComplete;
     private ViewTransitionComplete onOutComplete;
 
-    public void SetViewData(IViewData<GameHUDData> viewData)
+    public void SetViewData(ViewData<GameHUDData> viewData)
     {
         gameHudData = viewData.TypedData;
     }

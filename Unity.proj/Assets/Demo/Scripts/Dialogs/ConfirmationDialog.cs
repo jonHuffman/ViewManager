@@ -26,9 +26,9 @@ public class ConfirmationDialog : BaseView, IViewDataReceiver<ConfirmationDialog
         Debug.Assert(dialogBody != null, "dialogBody is Null!");
     }
 
-    public void SetViewData(IViewData<ConfirmationDialogData> viewData)
+    public void SetViewData(ViewData<ConfirmationDialogData> viewData)
     {
-        confirmationDialogData = viewData.TypedData;
+        confirmationDialogData = viewData;
     }
 
     public override void TransitionIn()
