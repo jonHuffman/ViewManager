@@ -562,9 +562,9 @@
 
             // Performs the destroy action of the View class, does not actually destroy the GameObject
             view.DestroyView();
-            DispatchViewClosed(view.ViewID);
-
             activeViews.Remove(view.ViewID);
+
+            DispatchViewClosed(view.ViewID);
             viewsToRemoveList.Remove(view.ViewID);
 
             completeCallback?.Invoke();
