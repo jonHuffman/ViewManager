@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using Interfaces;
     using Layers;
@@ -177,7 +178,7 @@
         /// <summary>
         /// Removes all of the active views
         /// </summary>
-        /// <param name="forceRemove">If true, all View objects will be destroyed regardless of whether they are flagged for persistence.</param>
+        /// <param name="forceRemove">If true, all View objects will be destroyed regardless of whether they are flagged for persistence (active or inactive).</param>
         public void RemoveAllViews(bool forceRemove = false)
         {
             viewsToAddList.Clear();
@@ -188,6 +189,11 @@
                 {
                     RemoveView(layer.activeView.ViewID, null, forceRemove);
                 }
+            }
+
+            if (forceRemove)
+            {
+                DestroyAllPersistentViews(); 
             }
 
             greyoutLayer.DisableGreyout();
@@ -568,6 +574,19 @@
             viewsToRemoveList.Remove(view.ViewID);
 
             completeCallback?.Invoke();
+        }
+
+        private void DestroyAllPersistentViews()
+        {
+            int[] persistentViewIDs = persistentViews.Keys.ToArray();
+            foreach (int viewID in persistentViewIDs)
+            {
+                if (persistentViews[viewID] != null)
+                {
+                    UnityEngine.Object.Destroy(((Component)persistentViews[viewID]).gameObject);
+                    persistentViews[viewID] = null;
+                }
+            }
         }
 
         /// <summary>

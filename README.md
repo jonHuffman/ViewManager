@@ -1,6 +1,6 @@
-[![version](https://img.shields.io/badge/version-v1.2-blue.svg)](https://github.com/jonHuffman/UnifiedFontSize)
+[![version](https://img.shields.io/badge/version-v1.3-blue.svg)](https://github.com/jonHuffman/UnifiedFontSize)
 [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/jonHuffman/ViewManager/blob/master/LICENSE)
-[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/ViewManager/raw/master/UnityPackage/ViewManager_v1.2.unitypackage)  
+[![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/ViewManager/raw/master/UnityPackage/ViewManager_v1.3.unitypackage)  
 
 # ViewManager
 A manager for the UI lifecycle within Unity applications, ViewManager makes it easy to add and remove UI prefabs while maintaining strict separation between UI and system code.
