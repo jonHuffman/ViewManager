@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/version-v1.3-blue.svg)](https://github.com/jonHuffman/UnifiedFontSize)
+[![version](https://img.shields.io/badge/version-v1.3-blue.svg)](https://github.com/jonHuffman/ViewManager)
 [![license](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/jonHuffman/ViewManager/blob/master/LICENSE)
 [![version](https://img.shields.io/badge/package-download-brightgreen.svg)](https://github.com/jonHuffman/ViewManager/raw/master/UnityPackage/ViewManager_v1.3.unitypackage)  
 
